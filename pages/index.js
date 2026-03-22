@@ -141,12 +141,13 @@ export default function Home() {
     .filter(r => !(r.isim && r.isim.includes('Meslek bilgisi')))
 
   // Stats
-  const tip   = rows.filter(r => r.meslek === 'Tıp Doktoru').length
-  const dis   = rows.filter(r => r.meslek === 'Diş Hekimi').length
-  const ecz   = rows.filter(r => r.meslek === 'Eczacı').length
-  const bos   = rows.filter(r => !r.meslek).length
-  const olumlu = rows.filter(r => r.durum === 'Olumlu').length
-  const musteri = rows.filter(r => r.durum === 'Müşteri Oldu').length
+  const validRows = rows.filter(r => !(r.isim && r.isim.includes('Meslek bilgisi')))
+  const tip   = validRows.filter(r => r.meslek === 'Tıp Doktoru').length
+  const dis   = validRows.filter(r => r.meslek === 'Diş Hekimi').length
+  const ecz   = validRows.filter(r => r.meslek === 'Eczacı').length
+  const bos   = validRows.filter(r => !r.meslek).length
+  const olumlu = validRows.filter(r => r.durum === 'Olumlu').length
+  const musteri = validRows.filter(r => r.durum === 'Müşteri Oldu').length
 
   // ── LOGIN SCREEN ────────────────────────────────────
   if (!authed) return (
@@ -203,7 +204,7 @@ export default function Home() {
         <div className={styles.statsSep} />
         <Stat color="#1B5E20" num={olumlu}  label="Olumlu" />
         <Stat color="#4A148C" num={musteri} label="Müşteri" />
-        <Stat color="#C62828" num={rows.length} label="Toplam" right />
+        <Stat color="#C62828" num={validRows.length} label="Toplam" right />
       </div>
 
       {/* TOOLBAR */}
