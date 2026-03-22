@@ -30,7 +30,7 @@ export default function Home() {
   const [toast,     setToast]     = useState(null)
   const noteRef = useRef()
 
-  // ââ AUTH ââââââââââââââââââââââââââââââââââââââââââââ
+  // ── AUTH ────────────────────────────────────────────
   async function handleLogin(e) {
     e.preventDefault()
     if (!kullanici) { setPwError('Lütfen adınızı seçin.'); return }
@@ -54,7 +54,7 @@ export default function Home() {
     if (saved) { setKullanici(saved); setAuthed(true); loadRows() }
   }, [])
 
-  // ââ DATA ââââââââââââââââââââââââââââââââââââââââââââ
+  // ── DATA ────────────────────────────────────────────
   async function loadRows() {
     setLoading(true)
     try {
@@ -101,7 +101,7 @@ export default function Home() {
     }
   }
 
-  // ââ MODAL âââââââââââââââââââââââââââââââââââââââââââ
+  // ── MODAL ───────────────────────────────────────────
   function openModal(row) {
     setModal({ row })
     setNoteText('')
@@ -121,13 +121,13 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handler)
   }, [modal, noteText, selDurum])
 
-  // ââ TOAST âââââââââââââââââââââââââââââââââââââââââââ
+  // ── TOAST ───────────────────────────────────────────
   function showToast(msg, type = 'success') {
     setToast({ msg, type })
     setTimeout(() => setToast(null), 3500)
   }
 
-  // ââ FILTER ââââââââââââââââââââââââââââââââââââââââââ
+  // ── FILTER ──────────────────────────────────────────
   const filtered = rows.filter(r => {
     const q = search.toLowerCase()
     const textMatch = !q || [r.isim, r.email, r.tel, r.meslek, r.notlar]
@@ -147,7 +147,7 @@ export default function Home() {
   const olumlu = rows.filter(r => r.durum === 'Olumlu').length
   const musteri = rows.filter(r => r.durum === 'Müşteri Oldu').length
 
-  // ââ LOGIN SCREEN ââââââââââââââââââââââââââââââââââââ
+  // ── LOGIN SCREEN ────────────────────────────────────
   if (!authed) return (
     <div className={styles.loginBg}>
       <form className={styles.loginCard} onSubmit={handleLogin}>
@@ -176,7 +176,7 @@ export default function Home() {
     </div>
   )
 
-  // ââ MAIN APP ââââââââââââââââââââââââââââââââââââââââ
+  // ── MAIN APP ────────────────────────────────────────
   return (
     <div className={styles.app}>
 
@@ -270,7 +270,7 @@ export default function Home() {
                   if (prevGroup === 'dolu' && group === 'bos') {
                     elems.push(
                       <tr key="sep" className={styles.sepRow}>
-                        <td colSpan={11}>ââ Meslek bilgisi girilmemiş katılımcılar ââ</td>
+                        <td colSpan={11}>── Meslek bilgisi girilmemiş katılımcılar ──</td>
                       </tr>
                     )
                   }
@@ -402,7 +402,7 @@ export default function Home() {
   )
 }
 
-// ââ SMALL COMPONENTS ââââââââââââââââââââââââââââââââââââââââââââââ
+// ── SMALL COMPONENTS ──────────────────────────────────────────────
 function Stat({ color, num, label, right }) {
   return (
     <div className={styles.stat} style={right ? { marginLeft: 'auto' } : {}}>
