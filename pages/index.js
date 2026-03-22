@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import styles from './index.module.css'
 
-const KULLANICILAR = ['Ä°lker', 'Dr. Levent', 'Hakan']
+const KULLANICILAR = ['İlker', 'Dr. Levent', 'Hakan']
 
 const DURUMLAR = [
   { key: 'Yeni',          label: 'Yeni',           bg: '#E8EAF6', color: '#283593' },
-  { key: 'Arama YapÄ±ldÄ±', label: 'Arama YapÄ±ldÄ±',  bg: '#E3F2FD', color: '#0D47A1' },
+  { key: 'Arama Yapıldı', label: 'Arama Yapıldı',  bg: '#E3F2FD', color: '#0D47A1' },
   { key: 'Olumlu',        label: 'Olumlu â',        bg: '#E8F5E9', color: '#1B5E20' },
   { key: 'Olumsuz',       label: 'Olumsuz â',       bg: '#FFEBEE', color: '#B71C1C' },
-  { key: 'MÃ¼Återi Oldu',  label: 'MÃ¼Återi Oldu â',  bg: '#F3E5F5', color: '#4A148C' },
+  { key: 'Müşteri Oldu',  label: 'Müşteri Oldu â',  bg: '#F3E5F5', color: '#4A148C' },
 ]
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
   // ââ AUTH ââââââââââââââââââââââââââââââââââââââââââââ
   async function handleLogin(e) {
     e.preventDefault()
-    if (!kullanici) { setPwError('LÃ¼tfen adÄ±nÄ±zÄ± seÃ§in.'); return }
+    if (!kullanici) { setPwError('Lütfen adınızı seçin.'); return }
     const res = await fetch('/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ export default function Home() {
       setAuthed(true)
       loadRows()
     } else {
-      setPwError('HatalÄ± Åifre.')
+      setPwError('Hatalı şifre.')
     }
   }
 
@@ -62,7 +62,7 @@ export default function Home() {
       if (data.error) throw new Error(data.error)
       setRows(data.rows)
     } catch(e) {
-      showToast('Veri yÃ¼klenemedi: ' + e.message, 'error')
+      showToast('Veri yüklenemedi: ' + e.message, 'error')
     } finally {
       setLoading(false)
     }
@@ -85,7 +85,7 @@ export default function Home() {
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
-      // Local state gÃ¼ncelle
+      // Local state güncelle
       setRows(prev => prev.map(r =>
         r.rowNum === modal.row.rowNum
           ? { ...r, notlar: data.notlar, durum: selDurum, atanan: kullanici }
@@ -138,28 +138,28 @@ export default function Home() {
   })
 
   // Stats
-  const tip   = rows.filter(r => r.meslek === 'TÄ±p Doktoru').length
-  const dis   = rows.filter(r => r.meslek === 'DiÅ Hekimi').length
-  const ecz   = rows.filter(r => r.meslek === 'EczacÄ±').length
+  const tip   = rows.filter(r => r.meslek === 'Tıp Doktoru').length
+  const dis   = rows.filter(r => r.meslek === 'Diş Hekimi').length
+  const ecz   = rows.filter(r => r.meslek === 'Eczacı').length
   const bos   = rows.filter(r => !r.meslek).length
   const olumlu = rows.filter(r => r.durum === 'Olumlu').length
-  const musteri = rows.filter(r => r.durum === 'MÃ¼Återi Oldu').length
+  const musteri = rows.filter(r => r.durum === 'Müşteri Oldu').length
 
   // ââ LOGIN SCREEN ââââââââââââââââââââââââââââââââââââ
   if (!authed) return (
     <div className={styles.loginBg}>
       <form className={styles.loginCard} onSubmit={handleLogin}>
         <div className={styles.loginLogo}>NEXE</div>
-        <div className={styles.loginSub}>ADAY PIPELINE Â· CRM</div>
+        <div className={styles.loginSub}>ADAY PIPELINE · CRM</div>
         <div className={styles.loginField}>
-          <label>AdÄ±nÄ±z</label>
+          <label>Adınız</label>
           <select value={kullanici} onChange={e => setKullanici(e.target.value)} required>
-            <option value="">SeÃ§in...</option>
+            <option value="">Seçin...</option>
             {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
           </select>
         </div>
         <div className={styles.loginField}>
-          <label>Åifre</label>
+          <label>Şifre</label>
           <input
             type="password"
             value={password}
@@ -169,7 +169,7 @@ export default function Home() {
           />
         </div>
         {pwError && <div className={styles.pwError}>{pwError}</div>}
-        <button type="submit" className={styles.btnLogin}>GiriÅ Yap â</button>
+        <button type="submit" className={styles.btnLogin}>Giriş Yap â</button>
       </form>
     </div>
   )
@@ -187,19 +187,19 @@ export default function Home() {
           <span className={styles.userBadge}>{kullanici}</span>
           <button className={styles.btnSignout} onClick={() => {
             sessionStorage.removeItem('nexe_user'); setAuthed(false)
-          }}>ÃÄ±kÄ±Å</button>
+          }}>Ãıkış</button>
         </div>
       </header>
 
       {/* STATS */}
       <div className={styles.statsBar}>
-        <Stat color="#E65100" num={tip}     label="TÄ±p Dr." />
-        <Stat color="#1B5E20" num={dis}     label="DiÅ Hek." />
-        <Stat color="#0D47A1" num={ecz}     label="EczacÄ±" />
+        <Stat color="#E65100" num={tip}     label="Tıp Dr." />
+        <Stat color="#1B5E20" num={dis}     label="Diş Hek." />
+        <Stat color="#0D47A1" num={ecz}     label="Eczacı" />
         <Stat color="#9E9E9E" num={bos}     label="Belirsiz" />
         <div className={styles.statsSep} />
         <Stat color="#1B5E20" num={olumlu}  label="Olumlu" />
-        <Stat color="#4A148C" num={musteri} label="MÃ¼Återi" />
+        <Stat color="#4A148C" num={musteri} label="Müşteri" />
         <Stat color="#C62828" num={rows.length} label="Toplam" right />
       </div>
 
@@ -210,43 +210,43 @@ export default function Home() {
           <input
             className={styles.searchInput}
             type="text"
-            placeholder="Ä°sim, e-posta, telefon ara..."
+            placeholder="İsim, e-posta, telefon ara..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
           {search && <button className={styles.clearBtn} onClick={() => setSearch('')}>Ã</button>}
         </div>
         <select className={styles.select} value={fMeslek} onChange={e => setFMeslek(e.target.value)}>
-          <option value="">TÃ¼m Meslekler</option>
-          <option value="TÄ±p Doktoru">TÄ±p Doktoru</option>
-          <option value="DiÅ Hekimi">DiÅ Hekimi</option>
-          <option value="EczacÄ±">EczacÄ±</option>
+          <option value="">Tüm Meslekler</option>
+          <option value="Tıp Doktoru">Tıp Doktoru</option>
+          <option value="Diş Hekimi">Diş Hekimi</option>
+          <option value="Eczacı">Eczacı</option>
           <option value="__bos__">Meslek Belirsiz</option>
         </select>
         <select className={styles.select} value={fDurum} onChange={e => setFDurum(e.target.value)}>
-          <option value="">TÃ¼m Durumlar</option>
+          <option value="">Tüm Durumlar</option>
           {DURUMLAR.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}
         </select>
         <select className={styles.select} value={fAtanan} onChange={e => setFAtanan(e.target.value)}>
-          <option value="">TÃ¼m Ekip</option>
+          <option value="">Tüm Ekip</option>
           {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
         </select>
         <button className={styles.btnRefresh} onClick={loadRows} disabled={loading}>
           {loading ? 'â³' : 'â»'} Yenile
         </button>
-        <span className={styles.countBadge}>{filtered.length} kayÄ±t</span>
+        <span className={styles.countBadge}>{filtered.length} kayıt</span>
       </div>
 
       {/* TABLE */}
       <div className={styles.tableWrap}>
         {loading && rows.length === 0 ? (
-          <div className={styles.loadingMsg}><span className={styles.spinner} /> YÃ¼kleniyor...</div>
+          <div className={styles.loadingMsg}><span className={styles.spinner} /> Yükleniyor...</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Ä°sim Soyisim</th>
+                <th>İsim Soyisim</th>
                 <th>Meslek</th>
                 <th className={styles.hideM}>E-Posta</th>
                 <th>Telefon</th>
@@ -255,7 +255,7 @@ export default function Home() {
                 <th>Durum</th>
                 <th className={styles.hideS}>Atanan</th>
                 <th>Son Not</th>
-                <th>Ä°Ålem</th>
+                <th>İşlem</th>
               </tr>
             </thead>
             <tbody>
@@ -268,7 +268,7 @@ export default function Home() {
                   if (prevGroup === 'dolu' && group === 'bos') {
                     elems.push(
                       <tr key="sep" className={styles.sepRow}>
-                        <td colSpan={11}>ââ Meslek bilgisi girilmemiÅ katÄ±lÄ±mcÄ±lar ââ</td>
+                        <td colSpan={11}>ââ Meslek bilgisi girilmemiş katılımcılar ââ</td>
                       </tr>
                     )
                   }
@@ -299,7 +299,7 @@ export default function Home() {
                           >ð</button>
                           <button
                             className={`${styles.btnAct} ${styles.btnNote}`}
-                            title="Not ekle / DÃ¼zenle"
+                            title="Not ekle / Düzenle"
                             onClick={() => openModal(r)}
                           >âï¸</button>
                         </div>
@@ -310,7 +310,7 @@ export default function Home() {
                 if (filtered.length === 0) {
                   elems.push(
                     <tr key="empty"><td colSpan={11} className={styles.empty}>
-                      SonuÃ§ bulunamadÄ±.
+                      Sonuç bulunamadı.
                     </td></tr>
                   )
                 }
@@ -346,7 +346,7 @@ export default function Home() {
               <textarea
                 ref={noteRef}
                 className={styles.noteInput}
-                placeholder={`GÃ¶rÃ¼Åme notu, izlenim, sonraki adÄ±m...\n(Ctrl+Enter ile kaydet)`}
+                placeholder={`Görüşme notu, izlenim, sonraki adım...\n(Ctrl+Enter ile kaydet)`}
                 value={noteText}
                 onChange={e => setNoteText(e.target.value)}
                 rows={4}
@@ -370,7 +370,7 @@ export default function Home() {
             </div>
             <div className={styles.modalFooter}>
               <span className={styles.modalHint}>Ctrl+Enter ile kaydet</span>
-              <button className={styles.btnCancel} onClick={closeModal}>Ä°ptal</button>
+              <button className={styles.btnCancel} onClick={closeModal}>İptal</button>
               <button className={styles.btnSave} onClick={saveNote} disabled={saving}>
                 {saving ? 'Kaydediliyor...' : 'Kaydet'}
               </button>
@@ -402,9 +402,9 @@ function Stat({ color, num, label, right }) {
 
 function MeslekBadge({ m }) {
   const map = {
-    'TÄ±p Doktoru': { bg: '#FFF3E0', color: '#E65100', label: 'TÄ±p Dr.' },
-    'DiÅ Hekimi':  { bg: '#E8F5E9', color: '#1B5E20', label: 'DiÅ Hek.' },
-    'EczacÄ±':       { bg: '#E3F2FD', color: '#0D47A1', label: 'EczacÄ±' },
+    'Tıp Doktoru': { bg: '#FFF3E0', color: '#E65100', label: 'Tıp Dr.' },
+    'Diş Hekimi':  { bg: '#E8F5E9', color: '#1B5E20', label: 'Diş Hek.' },
+    'Eczacı':       { bg: '#E3F2FD', color: '#0D47A1', label: 'Eczacı' },
   }
   const s = map[m] || { bg: '#EEEEEE', color: '#777', label: '?' }
   return (
@@ -428,9 +428,9 @@ function DurumBadge({ d }) {
 }
 
 function meslekKey(m) {
-  if (m === 'TÄ±p Doktoru') return 'tip'
-  if (m === 'DiÅ Hekimi')  return 'dis'
-  if (m === 'EczacÄ±')       return 'ecz'
+  if (m === 'Tıp Doktoru') return 'tip'
+  if (m === 'Diş Hekimi')  return 'dis'
+  if (m === 'Eczacı')       return 'ecz'
   return 'bos'
 }
 
