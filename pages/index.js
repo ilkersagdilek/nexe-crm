@@ -25,6 +25,7 @@ export default function Home() {
   const [modal,     setModal]     = useState(null)  // { row }
   const [noteText,  setNoteText]  = useState('')
   const [selDurum,  setSelDurum]  = useState('')
+  const [selAtanan, setSelAtanan] = useState('')
   const [saving,    setSaving]    = useState(false)
   const [toast,     setToast]     = useState(null)
   const noteRef = useRef()
@@ -79,7 +80,7 @@ export default function Home() {
           rowNum:    modal.row.rowNum,
           note:      noteText,
           durum:     selDurum,
-          atanan:    kullanici,
+          atanan:    selAtanan,
           kullanici: kullanici,
         }),
       })
@@ -105,6 +106,7 @@ export default function Home() {
     setModal({ row })
     setNoteText('')
     setSelDurum(row.durum || 'Aday')
+    setSelAtanan(row.atanan || kullanici)
     setTimeout(() => noteRef.current?.focus(), 100)
   }
 
@@ -343,13 +345,14 @@ export default function Home() {
                   ))}
                 </div>
               )}
-              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10,padding:'6px 10px',background:'var(--bg)',borderRadius:8}}>
-                <span style={{fontSize:12,color:'var(--ink3)',fontWeight:600}}>Konuşan:</span>
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,padding:'8px 10px',background:'var(--bg)',borderRadius:8,border:'1px solid var(--border)'}}>
+                <span style={{fontSize:12,color:'var(--ink3)',fontWeight:600,minWidth:70}}>Atanan:</span>
                 <select
-                  value={kullanic i}
-                  disabled
-                  style={{fontSize:13,padding:'3px 8px',borderRadius:6,border:'1px solid var(--border)',background:'var(--card)',color:'var(--ink)',fontWeight:500}}
+                  value={selAtanan}
+                  onChange={e => setSelAtanan(e.target.value)}
+                  style={{fontSize:13,padding:'4px 10px',borderRadius:6,border:'1px solid var(--border)',background:'var(--card)',color:'var(--ink)',fontWeight:500,flex:1}}
                 >
+                  <option value="">— Seçin —</option>
                   {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
                 </select>
               </div>
