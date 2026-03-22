@@ -106,7 +106,7 @@ export default function Home() {
     setModal({ row })
     setNoteText('')
     setSelDurum(row.durum || 'Aday')
-    setSelAtanan(row.atanan || kullanici)
+    setSelAtanan(row.atanan || '')
     setTimeout(() => noteRef.current?.focus(), 100)
   }
 
@@ -166,7 +166,7 @@ export default function Home() {
             type="password"
             value={password}
             onChange={e => { setPassword(e.target.value); setPwError('') }}
-            placeholder="â¢â¢â¢â¢â¢â¢â¢â¢"
+            placeholder="Şifrenizi girin"
             autoFocus
           />
         </div>
@@ -189,7 +189,7 @@ export default function Home() {
           <span className={styles.userBadge}>{kullanici}</span>
           <button className={styles.btnSignout} onClick={() => {
             sessionStorage.removeItem('nexe_user'); setAuthed(false)
-          }}>Ãıkış</button>
+          }}>Çıkış</button>
         </div>
       </header>
 
