@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       combined = existingNotes ? existingNotes + '\n' + line : line
     }
 
-    await updateRow(rowNum, combined, durum || row?.durum || 'Yeni', atanan || row?.atanan || '')
+    await updateRow(rowNum, combined, durum || row?.durum || 'Yeni', atanan !== undefined ? atanan : (row?.atanan || ''))
     res.status(200).json({ ok: true, notlar: combined })
   } catch (e) {
     console.error(e)
