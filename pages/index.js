@@ -20,7 +20,7 @@ export default function Home() {
   const [loading,   setLoading]   = useState(false)
   const [search,    setSearch]    = useState('')
   const [fMeslek,   setFMeslek]   = useState('')
-  const [fDurum,    setFDurum]    = useState('
+  const [fDurum,    setFDurum]    = useState('')
   const [fAtanan,   setFAtanan]   = useState('')
   const [modal,     setModal]     = useState(null)  // { row }
   const [noteText,  setNoteText]  = useState('')
