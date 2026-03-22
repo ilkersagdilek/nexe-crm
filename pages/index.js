@@ -138,6 +138,7 @@ export default function Home() {
     const aMatch = !fAtanan || r.atanan === fAtanan
     return textMatch && mMatch && dMatch && aMatch
   })
+    .filter(r => !(r.isim && r.isim.includes('Meslek bilgisi')))
 
   // Stats
   const tip   = rows.filter(r => r.meslek === 'Tıp Doktoru').length
