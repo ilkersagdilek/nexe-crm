@@ -89,7 +89,7 @@ export default function Home() {
       // Local state güncelle
       setRows(prev => prev.map(r =>
         r.rowNum === modal.row.rowNum
-          ? { ...r, notlar: data.notlar, durum: selDurum, atanan: kullanici }
+          ? { ...r, notlar: data.notlar, durum: selDurum, atanan: selAtanan }
           : r
       ))
       showToast('Kaydedildi ✓', 'success')
@@ -218,7 +218,7 @@ export default function Home() {
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          {search && <button className={styles.clearBtn} onClick={() => setSearch('')}>Ã</button>}
+          {search && <button className={styles.clearBtn} onClick={() => setSearch('')}>×</button>}
         </div>
         <select className={styles.select} value={fMeslek} onChange={e => setFMeslek(e.target.value)}>
           <option value="">Tüm Meslekler</option>
