@@ -92,7 +92,7 @@ export default function Home() {
           ? { ...r, notlar: data.notlar, durum: selDurum, atanan: kullanici }
           : r
       ))
-      showToast('Kaydedildi â', 'success')
+      showToast('Kaydedildi ✓', 'success')
       setModal(null)
     } catch(e) {
       showToast('Hata: ' + e.message, 'error')
@@ -134,7 +134,7 @@ export default function Home() {
       .join(' ').toLowerCase().includes(q)
     const mMatch = !fMeslek
       || (fMeslek === '__bos__' ? !r.meslek : r.meslek === fMeslek)
-    const dMatch = !fDurum  || (r.durum || 'Aday') === fDurum
+    const dMatch = !fDurum  || (fDurum === 'Aday' ? (!r.durum || r.durum === 'Aday' || r.durum === 'Yeni') : r.durum === fDurum)
     const aMatch = !fAtanan || r.atanan === fAtanan
     return textMatch && mMatch && dMatch && aMatch
   })
