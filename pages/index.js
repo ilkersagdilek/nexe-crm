@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import styles from './index.module.css'
 
-const KULLANICILAR = ['İlker', 'Dr. Levent', 'Hakan']
+const KULLANICILAR = ['Ä°lker', 'Dr. Levent', 'Hakan']
 
 const DURUMLAR = [
   { key: 'Yeni',          label: 'Yeni',           bg: '#E8EAF6', color: '#283593' },
-  { key: 'Arama Yapıldı', label: 'Arama Yapıldı',  bg: '#E3F2FD', color: '#0D47A1' },
-  { key: 'Olumlu',        label: 'Olumlu ✓',        bg: '#E8F5E9', color: '#1B5E20' },
-  { key: 'Olumsuz',       label: 'Olumsuz ✗',       bg: '#FFEBEE', color: '#B71C1C' },
-  { key: 'Müşteri Oldu',  label: 'Müşteri Oldu ★',  bg: '#F3E5F5', color: '#4A148C' },
+  { key: 'Arama YapÄ±ldÄ±', label: 'Arama YapÄ±ldÄ±',  bg: '#E3F2FD', color: '#0D47A1' },
+  { key: 'Olumlu',        label: 'Olumlu â',        bg: '#E8F5E9', color: '#1B5E20' },
+  { key: 'Olumsuz',       label: 'Olumsuz â',       bg: '#FFEBEE', color: '#B71C1C' },
+  { key: 'MÃ¼Återi Oldu',  label: 'MÃ¼Återi Oldu â',  bg: '#F3E5F5', color: '#4A148C' },
 ]
 
 export default function Home() {
@@ -29,10 +29,10 @@ export default function Home() {
   const [toast,     setToast]     = useState(null)
   const noteRef = useRef()
 
-  // ── AUTH ────────────────────────────────────────────
+  // ââ AUTH ââââââââââââââââââââââââââââââââââââââââââââ
   async function handleLogin(e) {
     e.preventDefault()
-    if (!kullanici) { setPwError('Lütfen adınızı seçin.'); return }
+    if (!kullanici) { setPwError('LÃ¼tfen adÄ±nÄ±zÄ± seÃ§in.'); return }
     const res = await fetch('/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ export default function Home() {
       setAuthed(true)
       loadRows()
     } else {
-      setPwError('Hatalı şifre.')
+      setPwError('HatalÄ± Åifre.')
     }
   }
 
@@ -53,7 +53,7 @@ export default function Home() {
     if (saved) { setKullanici(saved); setAuthed(true); loadRows() }
   }, [])
 
-  // ── DATA ────────────────────────────────────────────
+  // ââ DATA ââââââââââââââââââââââââââââââââââââââââââââ
   async function loadRows() {
     setLoading(true)
     try {
@@ -62,7 +62,7 @@ export default function Home() {
       if (data.error) throw new Error(data.error)
       setRows(data.rows)
     } catch(e) {
-      showToast('Veri yüklenemedi: ' + e.message, 'error')
+      showToast('Veri yÃ¼klenemedi: ' + e.message, 'error')
     } finally {
       setLoading(false)
     }
@@ -85,13 +85,13 @@ export default function Home() {
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
-      // Local state güncelle
+      // Local state gÃ¼ncelle
       setRows(prev => prev.map(r =>
         r.rowNum === modal.row.rowNum
           ? { ...r, notlar: data.notlar, durum: selDurum, atanan: kullanici }
           : r
       ))
-      showToast('Kaydedildi ✓', 'success')
+      showToast('Kaydedildi â', 'success')
       setModal(null)
     } catch(e) {
       showToast('Hata: ' + e.message, 'error')
@@ -100,7 +100,7 @@ export default function Home() {
     }
   }
 
-  // ── MODAL ───────────────────────────────────────────
+  // ââ MODAL âââââââââââââââââââââââââââââââââââââââââââ
   function openModal(row) {
     setModal({ row })
     setNoteText('')
@@ -119,13 +119,13 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handler)
   }, [modal, noteText, selDurum])
 
-  // ── TOAST ───────────────────────────────────────────
+  // ââ TOAST âââââââââââââââââââââââââââââââââââââââââââ
   function showToast(msg, type = 'success') {
     setToast({ msg, type })
     setTimeout(() => setToast(null), 3500)
   }
 
-  // ── FILTER ──────────────────────────────────────────
+  // ââ FILTER ââââââââââââââââââââââââââââââââââââââââââ
   const filtered = rows.filter(r => {
     const q = search.toLowerCase()
     const textMatch = !q || [r.isim, r.email, r.tel, r.meslek, r.notlar]
@@ -138,43 +138,43 @@ export default function Home() {
   })
 
   // Stats
-  const tip   = rows.filter(r => r.meslek === 'Tıp Doktoru').length
-  const dis   = rows.filter(r => r.meslek === 'Diş Hekimi').length
-  const ecz   = rows.filter(r => r.meslek === 'Eczacı').length
+  const tip   = rows.filter(r => r.meslek === 'TÄ±p Doktoru').length
+  const dis   = rows.filter(r => r.meslek === 'DiÅ Hekimi').length
+  const ecz   = rows.filter(r => r.meslek === 'EczacÄ±').length
   const bos   = rows.filter(r => !r.meslek).length
   const olumlu = rows.filter(r => r.durum === 'Olumlu').length
-  const musteri = rows.filter(r => r.durum === 'Müşteri Oldu').length
+  const musteri = rows.filter(r => r.durum === 'MÃ¼Återi Oldu').length
 
-  // ── LOGIN SCREEN ────────────────────────────────────
+  // ââ LOGIN SCREEN ââââââââââââââââââââââââââââââââââââ
   if (!authed) return (
     <div className={styles.loginBg}>
       <form className={styles.loginCard} onSubmit={handleLogin}>
         <div className={styles.loginLogo}>NEXE</div>
-        <div className={styles.loginSub}>ADAY PIPELINE · CRM</div>
+        <div className={styles.loginSub}>ADAY PIPELINE Â· CRM</div>
         <div className={styles.loginField}>
-          <label>Adınız</label>
+          <label>AdÄ±nÄ±z</label>
           <select value={kullanici} onChange={e => setKullanici(e.target.value)} required>
-            <option value="">Seçin...</option>
+            <option value="">SeÃ§in...</option>
             {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
           </select>
         </div>
         <div className={styles.loginField}>
-          <label>Şifre</label>
+          <label>Åifre</label>
           <input
             type="password"
             value={password}
             onChange={e => { setPassword(e.target.value); setPwError('') }}
-            placeholder="••••••••"
+            placeholder="â¢â¢â¢â¢â¢â¢â¢â¢"
             autoFocus
           />
         </div>
         {pwError && <div className={styles.pwError}>{pwError}</div>}
-        <button type="submit" className={styles.btnLogin}>Giriş Yap →</button>
+        <button type="submit" className={styles.btnLogin}>GiriÅ Yap â</button>
       </form>
     </div>
   )
 
-  // ── MAIN APP ────────────────────────────────────────
+  // ââ MAIN APP ââââââââââââââââââââââââââââââââââââââââ
   return (
     <div className={styles.app}>
 
@@ -187,19 +187,19 @@ export default function Home() {
           <span className={styles.userBadge}>{kullanici}</span>
           <button className={styles.btnSignout} onClick={() => {
             sessionStorage.removeItem('nexe_user'); setAuthed(false)
-          }}>Çıkış</button>
+          }}>ÃÄ±kÄ±Å</button>
         </div>
       </header>
 
       {/* STATS */}
       <div className={styles.statsBar}>
-        <Stat color="#E65100" num={tip}     label="Tıp Dr." />
-        <Stat color="#1B5E20" num={dis}     label="Diş Hek." />
-        <Stat color="#0D47A1" num={ecz}     label="Eczacı" />
+        <Stat color="#E65100" num={tip}     label="TÄ±p Dr." />
+        <Stat color="#1B5E20" num={dis}     label="DiÅ Hek." />
+        <Stat color="#0D47A1" num={ecz}     label="EczacÄ±" />
         <Stat color="#9E9E9E" num={bos}     label="Belirsiz" />
         <div className={styles.statsSep} />
         <Stat color="#1B5E20" num={olumlu}  label="Olumlu" />
-        <Stat color="#4A148C" num={musteri} label="Müşteri" />
+        <Stat color="#4A148C" num={musteri} label="MÃ¼Återi" />
         <Stat color="#C62828" num={rows.length} label="Toplam" right />
       </div>
 
@@ -210,43 +210,43 @@ export default function Home() {
           <input
             className={styles.searchInput}
             type="text"
-            placeholder="İsim, e-posta, telefon ara..."
+            placeholder="Ä°sim, e-posta, telefon ara..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          {search && <button className={styles.clearBtn} onClick={() => setSearch('')}>×</button>}
+          {search && <button className={styles.clearBtn} onClick={() => setSearch('')}>Ã</button>}
         </div>
         <select className={styles.select} value={fMeslek} onChange={e => setFMeslek(e.target.value)}>
-          <option value="">Tüm Meslekler</option>
-          <option value="Tıp Doktoru">Tıp Doktoru</option>
-          <option value="Diş Hekimi">Diş Hekimi</option>
-          <option value="Eczacı">Eczacı</option>
+          <option value="">TÃ¼m Meslekler</option>
+          <option value="TÄ±p Doktoru">TÄ±p Doktoru</option>
+          <option value="DiÅ Hekimi">DiÅ Hekimi</option>
+          <option value="EczacÄ±">EczacÄ±</option>
           <option value="__bos__">Meslek Belirsiz</option>
         </select>
         <select className={styles.select} value={fDurum} onChange={e => setFDurum(e.target.value)}>
-          <option value="">Tüm Durumlar</option>
+          <option value="">TÃ¼m Durumlar</option>
           {DURUMLAR.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}
         </select>
         <select className={styles.select} value={fAtanan} onChange={e => setFAtanan(e.target.value)}>
-          <option value="">Tüm Ekip</option>
+          <option value="">TÃ¼m Ekip</option>
           {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
         </select>
         <button className={styles.btnRefresh} onClick={loadRows} disabled={loading}>
-          {loading ? '⟳' : '↻'} Yenile
+          {loading ? 'â³' : 'â»'} Yenile
         </button>
-        <span className={styles.countBadge}>{filtered.length} kayıt</span>
+        <span className={styles.countBadge}>{filtered.length} kayÄ±t</span>
       </div>
 
       {/* TABLE */}
       <div className={styles.tableWrap}>
         {loading && rows.length === 0 ? (
-          <div className={styles.loadingMsg}><span className={styles.spinner} /> Yükleniyor...</div>
+          <div className={styles.loadingMsg}><span className={styles.spinner} /> YÃ¼kleniyor...</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
                 <th>#</th>
-                <th>İsim Soyisim</th>
+                <th>Ä°sim Soyisim</th>
                 <th>Meslek</th>
                 <th className={styles.hideM}>E-Posta</th>
                 <th>Telefon</th>
@@ -255,7 +255,7 @@ export default function Home() {
                 <th>Durum</th>
                 <th className={styles.hideS}>Atanan</th>
                 <th>Son Not</th>
-                <th>İşlem</th>
+                <th>Ä°Ålem</th>
               </tr>
             </thead>
             <tbody>
@@ -268,7 +268,7 @@ export default function Home() {
                   if (prevGroup === 'dolu' && group === 'bos') {
                     elems.push(
                       <tr key="sep" className={styles.sepRow}>
-                        <td colSpan={11}>── Meslek bilgisi girilmemiş katılımcılar ──</td>
+                        <td colSpan={11}>ââ Meslek bilgisi girilmemiÅ katÄ±lÄ±mcÄ±lar ââ</td>
                       </tr>
                     )
                   }
@@ -276,7 +276,7 @@ export default function Home() {
                   idx++
                   const durum = r.durum || 'Yeni'
                   const lastNote = r.notlar
-                    ? r.notlar.split('\n').pop().substring(0, 55) + (r.notlar.length > 55 ? '…' : '')
+                    ? r.notlar.split('\n').pop().substring(0, 55) + (r.notlar.length > 55 ? 'â¦' : '')
                     : ''
                   elems.push(
                     <tr key={r.rowNum} className={`${styles.row} ${styles['row_' + meslekKey(r.meslek)]}`}>
@@ -295,13 +295,13 @@ export default function Home() {
                           <button
                             className={`${styles.btnAct} ${styles.btnCall}`}
                             title="Ara"
-                            window.open('https://wa.me/' + r.tel.replace(/[^0-9]/g,''))
-                          >📞</button>
+                            onClick={() => window.open('https://wa.me/' + r.tel.replace(/[^0-9]/g,''))}
+                          >ð</button>
                           <button
                             className={`${styles.btnAct} ${styles.btnNote}`}
-                            title="Not ekle / Düzenle"
+                            title="Not ekle / DÃ¼zenle"
                             onClick={() => openModal(r)}
-                          >✏️</button>
+                          >âï¸</button>
                         </div>
                       </td>
                     </tr>
@@ -310,7 +310,7 @@ export default function Home() {
                 if (filtered.length === 0) {
                   elems.push(
                     <tr key="empty"><td colSpan={11} className={styles.empty}>
-                      Sonuç bulunamadı.
+                      SonuÃ§ bulunamadÄ±.
                     </td></tr>
                   )
                 }
@@ -333,7 +333,7 @@ export default function Home() {
                   <span style={{marginLeft:8, color:'var(--ink3)', fontSize:12}}>{modal.row.tel}</span>
                 </div>
               </div>
-              <button className={styles.modalClose} onClick={closeModal}>×</button>
+              <button className={styles.modalClose} onClick={closeModal}>Ã</button>
             </div>
             <div className={styles.modalBody}>
               {modal.row.notlar && (
@@ -346,7 +346,7 @@ export default function Home() {
               <textarea
                 ref={noteRef}
                 className={styles.noteInput}
-                placeholder={`Görüşme notu, izlenim, sonraki adım...\n(Ctrl+Enter ile kaydet)`}
+                placeholder={`GÃ¶rÃ¼Åme notu, izlenim, sonraki adÄ±m...\n(Ctrl+Enter ile kaydet)`}
                 value={noteText}
                 onChange={e => setNoteText(e.target.value)}
                 rows={4}
@@ -370,7 +370,7 @@ export default function Home() {
             </div>
             <div className={styles.modalFooter}>
               <span className={styles.modalHint}>Ctrl+Enter ile kaydet</span>
-              <button className={styles.btnCancel} onClick={closeModal}>İptal</button>
+              <button className={styles.btnCancel} onClick={closeModal}>Ä°ptal</button>
               <button className={styles.btnSave} onClick={saveNote} disabled={saving}>
                 {saving ? 'Kaydediliyor...' : 'Kaydet'}
               </button>
@@ -389,7 +389,7 @@ export default function Home() {
   )
 }
 
-// ── SMALL COMPONENTS ──────────────────────────────────────────────
+// ââ SMALL COMPONENTS ââââââââââââââââââââââââââââââââââââââââââââââ
 function Stat({ color, num, label, right }) {
   return (
     <div className={styles.stat} style={right ? { marginLeft: 'auto' } : {}}>
@@ -402,9 +402,9 @@ function Stat({ color, num, label, right }) {
 
 function MeslekBadge({ m }) {
   const map = {
-    'Tıp Doktoru': { bg: '#FFF3E0', color: '#E65100', label: 'Tıp Dr.' },
-    'Diş Hekimi':  { bg: '#E8F5E9', color: '#1B5E20', label: 'Diş Hek.' },
-    'Eczacı':       { bg: '#E3F2FD', color: '#0D47A1', label: 'Eczacı' },
+    'TÄ±p Doktoru': { bg: '#FFF3E0', color: '#E65100', label: 'TÄ±p Dr.' },
+    'DiÅ Hekimi':  { bg: '#E8F5E9', color: '#1B5E20', label: 'DiÅ Hek.' },
+    'EczacÄ±':       { bg: '#E3F2FD', color: '#0D47A1', label: 'EczacÄ±' },
   }
   const s = map[m] || { bg: '#EEEEEE', color: '#777', label: '?' }
   return (
@@ -428,9 +428,9 @@ function DurumBadge({ d }) {
 }
 
 function meslekKey(m) {
-  if (m === 'Tıp Doktoru') return 'tip'
-  if (m === 'Diş Hekimi')  return 'dis'
-  if (m === 'Eczacı')       return 'ecz'
+  if (m === 'TÄ±p Doktoru') return 'tip'
+  if (m === 'DiÅ Hekimi')  return 'dis'
+  if (m === 'EczacÄ±')       return 'ecz'
   return 'bos'
 }
 
