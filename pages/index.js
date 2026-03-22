@@ -232,7 +232,7 @@ export default function Home() {
           {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
         </select>
         <button className={styles.btnRefresh} onClick={loadRows} disabled={loading}>
-          {loading ? 'â³' : 'â»'} Yenile
+          {loading ? '⏳' : '↻'} Yenile
         </button>
         <span className={styles.countBadge}>{filtered.length} kayıt</span>
       </div>
@@ -296,12 +296,12 @@ export default function Home() {
                             className={`${styles.btnAct} ${styles.btnCall}`}
                             title="Ara"
                             onClick={() => window.open('https://wa.me/' + r.tel.replace(/[^0-9]/g,''))}
-                          >ð</button>
+                          >📞</button>
                           <button
                             className={`${styles.btnAct} ${styles.btnNote}`}
                             title="Not ekle / Düzenle"
                             onClick={() => openModal(r)}
-                          >âï¸</button>
+                          >✏️</button>
                         </div>
                       </td>
                     </tr>
