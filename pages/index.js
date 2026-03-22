@@ -20,7 +20,7 @@ export default function Home() {
   const [loading,   setLoading]   = useState(false)
   const [search,    setSearch]    = useState('')
   const [fMeslek,   setFMeslek]   = useState('')
-  const [fDurum,    setFDurum]    = useState('')
+  const [fDurum,    setFDurum]    = useState('
   const [fAtanan,   setFAtanan]   = useState('')
   const [modal,     setModal]     = useState(null)  // { row }
   const [noteText,  setNoteText]  = useState('')
@@ -295,7 +295,7 @@ export default function Home() {
                           <button
                             className={`${styles.btnAct} ${styles.btnCall}`}
                             title="Ara"
-                            onClick={() => { window.open('tel:' + r.tel.replace(/\s/g,'')); openModal(r) }}
+                            window.open('https://wa.me/' + r.tel.replace(/[^0-9]/g,''))
                           >📞</button>
                           <button
                             className={`${styles.btnAct} ${styles.btnNote}`}
