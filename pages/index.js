@@ -4,11 +4,11 @@ import styles from './index.module.css'
 const KULLANICILAR = ['İlker', 'Dr. Levent', 'Hakan']
 
 const DURUMLAR = [
-  { key: 'Yeni',          label: 'Yeni',           bg: '#E8EAF6', color: '#283593' },
+  { key: 'Aday',          label: 'Aday',            bg: '#E8EAF6', color: '#283593' },
   { key: 'Arama Yapıldı', label: 'Arama Yapıldı',  bg: '#E3F2FD', color: '#0D47A1' },
-  { key: 'Olumlu',        label: 'Olumlu â',        bg: '#E8F5E9', color: '#1B5E20' },
-  { key: 'Olumsuz',       label: 'Olumsuz â',       bg: '#FFEBEE', color: '#B71C1C' },
-  { key: 'Müşteri Oldu',  label: 'Müşteri Oldu â',  bg: '#F3E5F5', color: '#4A148C' },
+  { key: 'Olumlu',        label: 'Olumlu ✓',        bg: '#E8F5E9', color: '#1B5E20' },
+  { key: 'Olumsuz',       label: 'Olumsuz ✗',       bg: '#FFEBEE', color: '#B71C1C' },
+  { key: 'Müşteri Oldu',  label: 'Müşteri Oldu ☆',  bg: '#F3E5F5', color: '#4A148C' },
 ]
 
 export default function Home() {
@@ -104,7 +104,7 @@ export default function Home() {
   function openModal(row) {
     setModal({ row })
     setNoteText('')
-    setSelDurum(row.durum || 'Yeni')
+    setSelDurum(row.durum || 'Aday')
     setTimeout(() => noteRef.current?.focus(), 100)
   }
 
@@ -132,7 +132,7 @@ export default function Home() {
       .join(' ').toLowerCase().includes(q)
     const mMatch = !fMeslek
       || (fMeslek === '__bos__' ? !r.meslek : r.meslek === fMeslek)
-    const dMatch = !fDurum  || (r.durum || 'Yeni') === fDurum
+    const dMatch = !fDurum  || (r.durum || 'Aday') === fDurum
     const aMatch = !fAtanan || r.atanan === fAtanan
     return textMatch && mMatch && dMatch && aMatch
   })
@@ -169,7 +169,7 @@ export default function Home() {
           />
         </div>
         {pwError && <div className={styles.pwError}>{pwError}</div>}
-        <button type="submit" className={styles.btnLogin}>Giriş Yap â</button>
+        <button type="submit" className={styles.btnLogin}>Giriş Yap →</button>
       </form>
     </div>
   )
@@ -274,7 +274,7 @@ export default function Home() {
                   }
                   prevGroup = group
                   idx++
-                  const durum = r.durum || 'Yeni'
+                  const durum = r.durum || 'Aday'
                   const lastNote = r.notlar
                     ? r.notlar.split('\n').pop().substring(0, 55) + (r.notlar.length > 55 ? 'â¦' : '')
                     : ''
@@ -333,7 +333,7 @@ export default function Home() {
                   <span style={{marginLeft:8, color:'var(--ink3)', fontSize:12}}>{modal.row.tel}</span>
                 </div>
               </div>
-              <button className={styles.modalClose} onClick={closeModal}>Ã</button>
+              <button className={styles.modalClose} onClick={closeModal}>×</button>
             </div>
             <div className={styles.modalBody}>
               {modal.row.notlar && (
@@ -343,10 +343,20 @@ export default function Home() {
                   ))}
                 </div>
               )}
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10,padding:'6px 10px',background:'var(--bg)',borderRadius:8}}>
+                <span style={{fontSize:12,color:'var(--ink3)',fontWeight:600}}>Konuşan:</span>
+                <select
+                  value={kullanic i}
+                  disabled
+                  style={{fontSize:13,padding:'3px 8px',borderRadius:6,border:'1px solid var(--border)',background:'var(--card)',color:'var(--ink)',fontWeight:500}}
+                >
+                  {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
+                </select>
+              </div>
               <textarea
                 ref={noteRef}
                 className={styles.noteInput}
-                placeholder={`Görüşme notu, izlenim, sonraki adım...\n(Ctrl+Enter ile kaydet)`}
+                placeholder={`Görüşme notu, izlenim, sonraki adım...`}
                 value={noteText}
                 onChange={e => setNoteText(e.target.value)}
                 rows={4}
@@ -369,7 +379,7 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.modalFooter}>
-              <span className={styles.modalHint}>Ctrl+Enter ile kaydet</span>
+              
               <button className={styles.btnCancel} onClick={closeModal}>İptal</button>
               <button className={styles.btnSave} onClick={saveNote} disabled={saving}>
                 {saving ? 'Kaydediliyor...' : 'Kaydet'}
