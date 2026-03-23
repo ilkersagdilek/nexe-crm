@@ -257,7 +257,7 @@ export default function Home() {
                 <th className={styles.hideM}>Almanca</th>
                 <th className={styles.hideM}>Sunum Tarihi</th>
                 <th>Durum</th>
-                <th className={styles.hideS}>Atanan</th>
+                <th>Atanan</th>
                 <th>Son Not</th>
                 <th>İşlem</th>
               </tr>
@@ -280,7 +280,7 @@ export default function Home() {
                   idx++
                   const durum = r.durum || 'Aday'
                   const lastNote = r.notlar
-                    ? r.notlar.split('\n').pop().substring(0, 55) + (r.notlar.length > 55 ? 'â¦' : '')
+                    ? r.notlar.split('\n').pop().substring(0, 55) + (r.notlar.length > 55 ? '…' : '')
                     : ''
                   elems.push(
                     <tr key={r.rowNum} className={`${styles.row} ${styles['row_' + meslekKey(r.meslek)]}`}>
@@ -292,7 +292,7 @@ export default function Home() {
                       <td className={styles.hideM}>{r.almanca}</td>
                       <td className={`${styles.tdDate} ${styles.hideM}`}>{r.tarih}</td>
                       <td><DurumBadge d={durum} /></td>
-                      <td className={styles.hideS}>{r.atanan && <span className={styles.atananBadge}>{r.atanan}</span>}</td>
+                      <td >{r.atanan && <span className={styles.atananBadge}>{r.atanan}</span>}</td>
                       <td className={styles.tdNote} title={r.notlar}>{lastNote}</td>
                       <td>
                         <div className={styles.actions}>
