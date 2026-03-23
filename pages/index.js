@@ -78,6 +78,7 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           rowNum:    modal.row.rowNum,
+          isim:      modal.row.isim,
           note:      noteText,
           durum:     selDurum,
           atanan:    selAtanan,
