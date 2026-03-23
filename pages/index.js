@@ -292,7 +292,11 @@ export default function Home() {
                       <td className={styles.hideM}>{r.almanca}</td>
                       <td className={`${styles.tdDate} ${styles.hideM}`}>{r.tarih}</td>
                       <td><DurumBadge d={durum} /></td>
-                      <td >{r.atanan && <span className={styles.atananBadge}>{r.atanan}</span>}</td>
+                      <td >{r.atanan && <span style={{
+                              background: r.atanan==='İlker' ? '#e8f5e9' : r.atanan==='Dr. Levent' ? '#e3f2fd' : r.atanan==='Hakan' ? '#ffebee' : '#f0f0f0',
+                              color:      r.atanan==='İlker' ? '#1b5e20' : r.atanan==='Dr. Levent' ? '#0d47a1' : r.atanan==='Hakan' ? '#b71c1c' : '#888',
+                              padding:'2px 9px', borderRadius:20, fontSize:11, fontWeight:600, whiteSpace:'nowrap'
+                            }}>{r.atanan}</span>}</td>
                       <td className={styles.tdNote} title={r.notlar}>{lastNote}</td>
                       <td>
                         <div className={styles.actions}>
