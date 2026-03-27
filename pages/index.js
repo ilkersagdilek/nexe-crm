@@ -28,7 +28,20 @@ export default function Home() {
   const [selAtanan, setSelAtanan] = useState('')
   const [saving,    setSaving]    = useState(false)
   const [toast,     setToast]     = useState(null)
-  const noteRef = useRef()
+  const noteRef      = useRef()
+  const tableWrapRef = useRef()
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  useEffect(() => {
+    const el = tableWrapRef.current
+    if (!el) return
+    const onScroll = () => setShowScrollTop(el.scrollTop > 200)
+    el.addEventListener('scroll', onScroll)
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
+  function scrollToTop()    { tableWrapRef.current?.scrollTo({ top: 0, behavior: 'smooth' }) }
+  function scrollToBottom() { tableWrapRef.current?.scrollTo({ top: tableWrapRef.current.scrollHeight, behavior: 'smooth' }) }
 
   // ── AUTH ────────────────────────────────────────────
   async function handleLogin(e) {
@@ -236,6 +249,9 @@ export default function Home() {
           <option value="">Tüm Ekip</option>
           {KULLANICILAR.map(k => <option key={k} value={k}>{k}</option>)}
         </select>
+        <button className={styles.btnScrollBottom} onClick={scrollToBottom} title="En alta git">
+          ↓ En Alta
+        </button>
         <button className={styles.btnRefresh} onClick={loadRows} disabled={loading}>
           {loading ? '⏳' : '↻'} Yenile
         </button>
@@ -243,7 +259,7 @@ export default function Home() {
       </div>
 
       {/* TABLE */}
-      <div className={styles.tableWrap}>
+      <div className={styles.tableWrap} ref={tableWrapRef}>
         {loading && rows.length === 0 ? (
           <div className={styles.loadingMsg}><span className={styles.spinner} /> Yükleniyor...</div>
         ) : (
@@ -404,6 +420,13 @@ export default function Home() {
         <div className={`${styles.toast} ${styles['toast_' + toast.type]}`}>
           {toast.msg}
         </div>
+      )}
+
+      {/* SCROLL TO TOP FAB */}
+      {showScrollTop && (
+        <button className={styles.btnScrollTop} onClick={scrollToTop} title="En üste git">
+          ↑
+        </button>
       )}
     </div>
   )

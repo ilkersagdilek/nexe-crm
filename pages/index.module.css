@@ -115,6 +115,12 @@
   font-size: 12px; background: var(--bg); color: var(--ink); outline: none;
   cursor: pointer;
 }
+.btnScrollBottom {
+  padding: 7px 14px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--ink2);
+  cursor: pointer; transition: background .15s;
+}
+.btnScrollBottom:hover { background: var(--border); }
 .btnRefresh {
   padding: 7px 14px; background: var(--bg); border: 1px solid var(--border);
   border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--ink2);
@@ -257,6 +263,18 @@
   transition: opacity .15s;
 }
 .btnSave:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ── SCROLL TO TOP FAB ─────────────────────────────── */
+.btnScrollTop {
+  position: fixed; bottom: 80px; right: 22px; z-index: 500;
+  width: 42px; height: 42px;
+  background: var(--ink); color: white; border: none; border-radius: 50%;
+  font-size: 20px; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.35);
+  transition: opacity .2s, transform .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.btnScrollTop:hover { opacity: .85; transform: translateY(-2px); }
 
 /* ── TOAST ─────────────────────────────────────────── */
 .toast {
