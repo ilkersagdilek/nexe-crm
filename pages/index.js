@@ -38,7 +38,7 @@ export default function Home() {
     const onScroll = () => setShowScrollTop(el.scrollTop > 200)
     el.addEventListener('scroll', onScroll)
     return () => el.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [authed])
 
   function scrollToTop()    { tableWrapRef.current?.scrollTo({ top: 0, behavior: 'smooth' }) }
   function scrollToBottom() { tableWrapRef.current?.scrollTo({ top: tableWrapRef.current.scrollHeight, behavior: 'smooth' }) }
